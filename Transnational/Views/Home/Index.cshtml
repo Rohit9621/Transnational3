@@ -1,0 +1,80 @@
+﻿<div class="jumbotron">
+
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+            is an ideal platform for building RESTful applications on the .NET Framework.
+        </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <table id="tblResponse" cellpadding="5" cellspacing="5" class="table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>BusinessLine</th>
+                    <th>IsSelected</th>
+                    <th>ServiceName</th>
+                    <th>NewPrice</th>
+                    <th>ServiceId</th>
+                    <th>ServiceUnavailableID</th>
+                    ,
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "http://localhost:11236/api/ServiceAndProduct/GetServicesByContract",
+        headers: { 'APIKey': '5567GGH67225HYVGG' },
+        data: JSON.stringify({
+            "ContractId": 3213,
+            "ContactId": 1,
+            "ServiceStartDate": "2023-01-22 00:00:00.000",
+            "ServiceEndDate": "2023-01-22 00:00:00.000",
+            "CityIdFrom": "3",
+            "CityIdTo": "14",
+            "CD": "Teamwork_CRM_UAT"
+        }),
+        success: function (data) {
+            console.log("data: ", data);
+            if (data && data.Result) {
+                $.each(data.Result, function (index, value) {
+                    $("#tblResponse > tbody").append("<tr><td>" + value.BusinessLine + "</td><td>" + value.IsSelected + "</td><td>" + value.ServiceName + "</td><td>" + value.NewPrice + "</td><td>" + value.ServiceId + "</td><td>" + value.ServiceUnavailableID + "</td></tr>");
+                    //console.log(value.ServiceId);
+                    //console.log(value.ServiceName);
+                    //console.log(value.ServiceUnavailableID);
+                    //console.log(value.SubBusinessLine);
+                });
+            }
+        },
+        error: function (xhr) {
+            alert("An error occured: " + xhr.status + " " + xhr.statusText);
+        }
+    });
+});
+</script>
